@@ -1,24 +1,22 @@
 #!/usr/bin/python3
-""" Generates a .tgz archive """
-from fabric.api import local
-from datetime import datetime
+""" Display “Hello HBNB! """
+
+from flask import Flask
+
+app = Flask(__name__)
 
 
-def do_pack():
-    """Generates a .tgz archive from the contents
-    of the web_static folder of your AirBnB Clone repo"""
-    from os import mkdir, path
+@app.route("/", strict_slashes=False)
+def route():
+    """Returns 'Hello, HBNB!' on the main route route"""
+    return "Hello HBNB!"
 
-    now = datetime.now()
-    filename = "web_static_{}.tgz".format(now.strftime("%Y%m%d%H%M%S"))
-    filepath = "versions/{}".format(filename)
 
-    try:
-        mkdir('./versions')
-    except FileExistsError:
-        pass
+@app.route("/hbnb", strict_slashes=False)
+def hbnb_route():
+    """Returns 'HBNB' on route /hbnb"""
+    return "HBNB"
 
-    create_file = local("tar -cvzf {} web_static".format(filepath))
-    if create_file.failed:
-        return None
-    return filepath
+
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port="5000")
